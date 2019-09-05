@@ -1,5 +1,6 @@
 import requests
 import json
+import scholarly
 
 doi_html="http://api.springernature.com/meta/v2/json?q=doi:"
 
@@ -21,6 +22,17 @@ def download_and_extract_abstract(doi, api_key):
     abstract_text = get_abstract(my_obj)
     return abstract_text
 
+def get_google_scholar_obj(doi):
+     search_query = scholarly.search_pubs_query(doi)
+     res = next(search_query)
+     return res
+
+def get_cited_by(scholarly_obj):
+     # print("------")
+     # print(res.bib)
+     return scholarly_obj.citedby
+     # print(my_obj)
+
 test_doi = "10.1186/1471-2105-14-202"
 test_abstract = download_and_extract_abstract(test_doi, api_key)
 # print(test_abstract)
@@ -30,7 +42,9 @@ doi_list = [
     "10.1186/1471-2105-14-202"
 ]
 
-for doi in doi_list:
-    print("-----")
-    print(download_and_extract_abstract(doi, api_key))
-    print("-----")
+print(get_cited_by(get_google_scholar_obj("10.1186/1741-7007-9-34")))
+
+# for doi in doi_list:
+#     print("-----")
+#     print(download_and_extract_abstract(doi, api_key))
+#     print("-----")
